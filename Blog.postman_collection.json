@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "7cedd02e-33a8-4fef-9152-30b95fdad48f",
+		"name": "Blog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13813018",
+		"_collection_link": "https://galactic-shuttle-878912.postman.co/workspace/Intro-for-devs~c6339abe-d4ae-4eaa-b70e-699c82bb202c/collection/13813018-7cedd02e-33a8-4fef-9152-30b95fdad48f?action=share&source=collection_link&creator=13813018"
+	},
+	"item": [
+		{
+			"name": "User_Auth",
+			"item": [
+				{
+					"name": "RegisterUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var dob = new Date();",
+									"dob.setFullYear(dob.getFullYear() - 20);",
+									"pm.variables.set(\"dob\", dob.toISOString().split('T')[0]);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Create a dob variable of type date and set the value to 20 years ago",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Prince\",\n    \"email\": \"princeraj427@gmail.com\",\n    \"phone\": \"9835444828\",\n    \"dateOfBirth\": \"2002-01-12\",\n    \"password\": \"Prince@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "This API endpoint is used to register a new user. When making a POST request to {{baseUrl}}/api/register, the request should include a JSON payload in the raw request body. The payload should contain the user's name, email, phone, and date of birth.\n\n### Request Body\n\n- `name`: (string) The name of the user.\n- `email`: (string) The email address of the user.\n- `phone`: (string) The phone number of the user.\n- `dateOfBirth`: (string) The date of birth of the user.\n    \n\n### Response\n\nThe API returns a status code of 400 in case of a bad request, along with a JSON object containing a `message` key indicating the reason for the failure.\n\nExample:\n\n``` json\n{\n    \"message\": \"...\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "LoginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"prince@gmail.com\",\n    \"phone\": \"9835444828\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "This endpoint is used to authenticate a user by sending a POST request to the specified URL. The request should include the user's email and phone in the request body.\n\n### Request Body\n\n- `email` (string, required): The user's email.\n- `phone` (string, required): The user's phone number.\n    \n\n### Response\n\n- `message` (string): A message confirming the successful authentication.\n    \n\nExample:\n\n``` json\n{\n    \"message\": \"...\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "LogOutUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						},
+						"description": "This API endpoint is used to log out a user from the system. Upon successful execution, it returns a status code of 200 with an empty message in the response body."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "CreatePost",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEzYjEwMTViZDFjZTU5MmNiYjc1NzUiLCJpYXQiOjE3MDUzMTcxNzYsImV4cCI6MTcwNTMyMDc3Nn0.lvOBVZG9mpRHyTNZhTH3cW2TPV7kYjjNh4CBKusY0Nw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Post Title 2\",\n    \"text\": \"This is blog description. It's second blog.\",\n    \"image\": \"https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/blog/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blog",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllPost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/blog/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blog",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllForUserId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LandingPage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<p>{{response.message}}</p>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    return {response: pm.response.json()}",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				},
+				"description": "This endpoint makes an HTTP GET request to {{baseUrl}}. The request does not include a request body. Upon successful execution, the response returns a status code of 200 along with a message in the response body."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "userId",
+			"value": "65a3b1015bd1ce592cbb7575"
+		}
+	]
+}
