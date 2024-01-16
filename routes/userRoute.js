@@ -1,11 +1,13 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const corsMiddleware = require('../middleware/corsMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 
 // Route to register a new user
-router.post('/register', async (req,res) => {
+router.post('/register',corsMiddleware, async (req,res) => {
     try {
         const { name, email, phone, dateOfBirth,password } = req.body;
 
@@ -33,7 +35,7 @@ router.post('/register', async (req,res) => {
 });
 
 // Route to login an existing user
-router.post('/login',async (req,res) => {
+router.post('/login',corsMiddleware, async (req,res) => {
     try {
         const {email, password } = req.body;
 
@@ -68,7 +70,7 @@ router.post('/login',async (req,res) => {
 
 
 // Route for LogOut
-router.post('/logout',async (req,res) => {
+router.post('/logout', corsMiddleware, async (req,res) => {
     try{
         // Additional logic for logout can be added here (e.g., invalidate session or token)
 
@@ -77,6 +79,21 @@ router.post('/logout',async (req,res) => {
     catch(error) {
         res.status(500).json({ message: error.message });
     }
+});
+
+router.post('/userInfo',authMiddleware,async (req,res) => {
+    try{
+        const userId = req.user.userId;
+
+        if(!userId) {
+            return res.status(404).json({ error: "user not found." });
+        }
+    
+        const user = await User.findOne({_id: userId });
+        res.status(200).json({ user });
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error! " });
+    }    
 });
 
 module.exports = router;

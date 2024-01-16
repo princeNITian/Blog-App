@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const userRoute = require('./routes/userRoute');
 const blogRoute = require('./routes/blogRoute');
+const corsMiddleware = require('./middleware/corsMiddleware');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -16,7 +17,7 @@ mongoose.connect(process.env.MONGO_URI)
     })
     .catch(error => console.log('Error: ',error));
 
-app.use('/api',userRoute);
+app.use('/api',corsMiddleware,userRoute);
 app.use('/blog',blogRoute);
 
 app.get('/', (req,res) => {

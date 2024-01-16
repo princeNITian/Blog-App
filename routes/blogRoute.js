@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const rateLimiter = require('../middleware/rateLimiter');
+const corsMiddleware = require('../middleware/corsMiddleware');
 const Post = require('../models/Post');
 // const User = require('../models/User');
 
@@ -32,7 +33,7 @@ router.post('/create',authMiddleware,rateLimiter, async (req,res) => {
 });
 
 // Public Route for all posts
-router.get('/', async (req,res) => {
+router.get('/',corsMiddleware, async (req,res) => {
     try {
         // Find Posts
         const posts = await Post.find({});
