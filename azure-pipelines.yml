@@ -5,7 +5,7 @@
 trigger:
 - main
 
-pool: self-hosted
+pool: my-personal-computer
 
 resources:
 - repo: self
